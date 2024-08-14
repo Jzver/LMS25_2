@@ -1,4 +1,5 @@
 from django.db import models
+from lms_project import settings
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -66,6 +67,7 @@ class Lesson(models.Model):
 
         def __str__(self):
             return f"Урок {self.name_ln} из курса {self.name_course}"
+
 
 class SubscriptionCourse(models.Model):
     user = models.ForeignKey(
