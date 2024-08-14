@@ -22,7 +22,7 @@ class LessonTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_lesson_retrieve(self):
-        url = reverse("materials:lesson-get", args=(self.lesson.pk,))
+        url = reverse("lms:lesson-get", args=(self.lesson.pk,))
         response = self.client.get(url)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -30,7 +30,7 @@ class LessonTestCase(APITestCase):
         self.assertEqual(data.get("name_course"), self.lesson.name_course.pk)
 
     def test_lesson_create(self):
-        url = reverse("materials:lesson-create")
+        url = reverse("lms:lesson-create")
         data = {
             "name_ln": "Test Lesson",
             "description": "Test Lesson",
@@ -43,20 +43,20 @@ class LessonTestCase(APITestCase):
         self.assertEqual(Lesson.objects.all().count(), 1)
 
     def test_lesson_update(self):
-        url = reverse("materials:lesson-update", args=(self.lesson.pk,))
+        url = reverse("lms:lesson-update", args=(self.lesson.pk,))
         data = {"name_ln": "Updated Test Lesson"}
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Lesson.objects.get(pk=self.lesson.pk).name_ln, "Updated Test Lesson")
 
     def test_lesson_delete(self):
-        url = reverse("materials:lesson-delete", args=(self.lesson.pk,))
+        url = reverse("lms:lesson-delete", args=(self.lesson.pk,))
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Lesson.objects.all().count(), 0)
 
     def test_lesson_list(self):
-        url = reverse("materials:lesson-list")
+        url = reverse("lms:lesson-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()["results"]), 1)
@@ -70,7 +70,7 @@ class SubscriptionTestCase(APITestCase):
             name_course="Test Course", description="Test Course"
         )
         self.client.force_authenticate(user=self.user)
-        self.url = reverse("materials:subscription")
+        self.url = reverse("lms:subscription")
 
     def test_subscription_create(self):
         data = {"user": self.user.pk, "course": self.course.pk}
